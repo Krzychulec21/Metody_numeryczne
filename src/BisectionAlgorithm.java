@@ -1,4 +1,4 @@
-public class Bisection {
+public class BisectionAlgorithm {
 
 
         public static double bisection(double a, double b, double epsilon, int maxIterations) {
@@ -33,7 +33,7 @@ public class Bisection {
         }
 
         public static void main(String[] args) {
-            double a = 1.0;
+            double a = -2.0;
             double b = 3.0;
             double epsilon = 0.0001;
             int maxIterations = 1000;
