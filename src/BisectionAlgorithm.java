@@ -40,7 +40,7 @@ public class BisectionAlgorithm {
 
             double root = bisection(a, b, epsilon, maxIterations);
 
-            System.out.println("Root: " + root);
+            System.out.println("Miejsce zerowe: " + root);
         }
     }
 
