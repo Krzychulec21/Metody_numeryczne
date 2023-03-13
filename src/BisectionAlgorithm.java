@@ -21,7 +21,7 @@ public class BisectionAlgorithm {
                 else {
                     a = c;
                 }
-                
+
             }
 
             return c;
