@@ -1,15 +1,15 @@
 public class BisectionAlgorithm {
 
 
-        public static double bisection(double a, double b, double epsilon, int maxIterations) {
+        public static double bisection(double a, double b, double epsilon) {
             if (f(a) * f(b) >= 0) {
                 throw new IllegalArgumentException("Function has same signs at end points");
             }
 
-            int iter = 0;
+
             double c = a;
 
-            while ((b - a) >= epsilon && iter < maxIterations) {
+            while ((b - a) >= epsilon) {
                 c = (a + b) / 2.0;
 
                 if (f(c) == 0.0) {
@@ -21,7 +21,7 @@ public class BisectionAlgorithm {
                 else {
                     a = c;
                 }
-                iter++;
+                
             }
 
             return c;
@@ -36,9 +36,9 @@ public class BisectionAlgorithm {
             double a = -2.0;
             double b = 3.0;
             double epsilon = 0.0001;
-            int maxIterations = 1000;
 
-            double root = bisection(a, b, epsilon, maxIterations);
+
+            double root = bisection(a, b, epsilon);
 
             System.out.println("Miejsce zerowe: " + root);
         }
