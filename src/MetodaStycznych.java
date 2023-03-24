@@ -7,29 +7,27 @@ public class MetodaStycznych {
         }
         double[] f1 = pochodna(rownanie);
         double[] f2 = pochodna(f1);
-        double c;
+        double c = a;
         if (func(f1, a) * func(f2, a) >= 0) {
             c = a;
-        } else if (func(f1, b) * func(f2, b) >= 0) {
+        }
+        if (func(f1, b) * func(f2, b) >= 0) {
             c = b;
-        } else if (func(rownanie, a) * func(f2, a) >= 0) {
-            c = a;
-        } else if (func(rownanie, b) * func(f2, b) >= 0) {
-            c = b;
-        } else {
-            throw new IllegalArgumentException("Error");
+        }
+
+        if (func(f1, b) * func(f2, b) >= 0 && func(f1, a) * func(f2, a) >= 0) {
+            if (func(rownanie, a) * func(f2, a) >= 0) {
+                c = a;
+            }
+            if (func(rownanie, b) * func(f2, b) >= 0) {
+                c = b;
+            }
         }
         while (Math.abs(func(rownanie, c)) >= epsil) {
             c = c - (func(rownanie, c) / func(f1, c));
             licznik++;
         }
-
-        System.out.println("x"+licznik+" = "+c);
-
-//        System.out.println(func(rownanie, a));
-//        System.out.println(func(f1, a));
-//        System.out.println(func(f2, a));
-
+        System.out.println("x" + licznik + " = " + c);
     }
 
     public static double[] pochodna(double[] rownanie) {
@@ -41,7 +39,6 @@ public class MetodaStycznych {
         return wspPochodnej;
     }
 
-
     static double func(double[] wspolczynniki, double x) {
         double wartosc = 0;
         for (int i = 0; i < wspolczynniki.length; i++) {
@@ -52,13 +49,11 @@ public class MetodaStycznych {
 
 
     public static void main(String[] args) {
-        double[] wspolczynniki = {1,-3,2,2,-3,1}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
-        double a = -1.5; // the left end of the interval
-        double b = -0.75; // the right end of the interval
-        double epsilon = 0.01;
+        double[] wspolczynniki = {-7, -4, -2, 1}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
+        double a = 3; // the left end of the interval
+        double b = 4; // the right end of the interval
+        double epsilon = 0.00001;
         styczne(a, b, epsilon, wspolczynniki);
-
-
     }
-}
 
+}
