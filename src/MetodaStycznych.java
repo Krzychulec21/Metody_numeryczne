@@ -1,7 +1,7 @@
-public class Falsi {
+public class MetodaStycznych {
     static int licznik = 0;
 
-    public static void falsi(double a, double b, double epsil, double[] rownanie) {
+    public static void styczne(double a, double b, double epsil, double[] rownanie) {
         if (func(rownanie, a) * func(rownanie, b) >= 0) {
             throw new IllegalArgumentException("Wartosci na koncach przedzialu sa takie same!");
         }
@@ -55,9 +55,10 @@ public class Falsi {
         double[] wspolczynniki = {1,-3,2,2,-3,1}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
         double a = -1.5; // the left end of the interval
         double b = -0.75; // the right end of the interval
-        double epsilon = 0.000001;
-        falsi(a, b, epsilon, wspolczynniki);
+        double epsilon = 0.01;
+        styczne(a, b, epsilon, wspolczynniki);
 
 
     }
 }
+
