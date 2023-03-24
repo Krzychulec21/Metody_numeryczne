@@ -30,7 +30,7 @@ public class BisectionAlgorithm {
     public static void main(String[] args) {
         double a = -1.5;  //the left end of the interval
         double b = -0.75;  // the rigt end of the interval
-        double epsilon = 0.000001; //
+        double epsilon = 0.01; //
 
 
         double result = bisection(a, b, epsilon);
