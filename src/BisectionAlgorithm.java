@@ -18,7 +18,6 @@ public class BisectionAlgorithm {
             }
             i++;
         }
-
         return c;
     }
 
