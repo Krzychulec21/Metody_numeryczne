@@ -1,12 +1,19 @@
+import java.util.function.DoubleFunction;
+
 public class Sieczne {
     static int licznik = 1;
+    private static final double DX = 0.0001;
 
-    public static void sieczne(double a, double b, double epsil, double[] rownanie) {
+    private static DoubleFunction<Double> derive(DoubleFunction<Double> f) {
+        return (x) -> (f.apply(x + DX) - f.apply(x)) / DX;
+    }
+
+    public static void sieczne(double a, double b, double epsil, DoubleFunction<Double> rownanie) {
         if (func(rownanie, a) * func(rownanie, b) >= 0) {
             throw new IllegalArgumentException("Wartosci na koncach przedzialu sa takie same!");
         }
-        double[] f1 = pochodna(rownanie);
-        double[] f2 = pochodna(f1);
+        DoubleFunction<Double> f1 = derive(rownanie);
+        DoubleFunction<Double> f2 = derive(f1);
         double x0 = a;
         if (func(f1, a) * func(f2, a) >= 0) {
             x0 = a;
@@ -25,18 +32,17 @@ public class Sieczne {
         }
         double x1;
         double xn;
-        if ( x0 == b) {
-            x1=a;
-        }
-        else {
-            x1=b;
+        if (x0 == b) {
+            x1 = a;
+        } else {
+            x1 = b;
         }
         do {
-            xn = x1 - (func(rownanie,x1)*(x1-x0))/(func(rownanie,x1)-func(rownanie,x0)) ;
-            x0=x1;
-            x1=xn;
+            xn = x1 - (func(rownanie, x1) * (x1 - x0)) / (func(rownanie, x1) - func(rownanie, x0));
+            x0 = x1;
+            x1 = xn;
             licznik++;
-        } while (Math.abs(func(rownanie,xn)) >= epsil);
+        } while (Math.abs(func(rownanie, xn)) >= epsil);
         System.out.println("x" + licznik + " = " + xn);
     }
 
@@ -49,21 +55,18 @@ public class Sieczne {
         return wspPochodnej;
     }
 
-    static double func(double[] wspolczynniki, double x) {
-        double wartosc = 0;
-        for (int i = 0; i < wspolczynniki.length; i++) {
-            wartosc += wspolczynniki[i] * Math.pow(x, i);
-        }
-        return wartosc;
+    static double func(DoubleFunction<Double> f, double x) {
+        return (f.apply(x));
     }
 
 
     public static void main(String[] args) {
         double[] wspolczynniki = {-7, -4, -2, 1}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
-        double a = 3; // the left end of the interval
-        double b = 4; // the right end of the interval
+        DoubleFunction<Double> cube = (x) -> (x + 1) * (Math.pow((x - 1), 4));
+        double a = -1.5; // the left end of the interval
+        double b = -0.75; // the right end of the interval
         double epsilon = 0.01;
-        sieczne(a, b, epsilon, wspolczynniki);
+        sieczne(a, b, epsilon, cube);
     }
 
 }

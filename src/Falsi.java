@@ -4,10 +4,6 @@ public class Falsi {
     static int licznik = 0;
     private static final double DX = 0.0001;
 
-    /**
-     * @param f f(x), the function to derive
-     * @return f'(x), the derivative of the f(x)
-     */
     private static DoubleFunction<Double> derive(DoubleFunction<Double> f) {
         return (x) -> (f.apply(x + DX) - f.apply(x)) / DX;
     }
@@ -36,11 +32,11 @@ public class Falsi {
             }
         }
         double x;
-        if (c==b)
-            x =a ;
-        else x=b;
+        if (c == b)
+            x = a;
+        else x = b;
         while (Math.abs(func(rownanie, x)) >= epsil) {
-            x = x - (func(rownanie,x)*(c-x))/(func(rownanie,c)-func(rownanie,x));
+            x = x - (func(rownanie, x) * (c - x)) / (func(rownanie, c) - func(rownanie, x));
             licznik++;
         }
         System.out.println("x" + licznik + " = " + x);
@@ -56,13 +52,13 @@ public class Falsi {
 //    }
 
     static double func(DoubleFunction<Double> f, double x) {
-        return Math.round(f.apply(x));
+        return (f.apply(x));
     }
 
 
     public static void main(String[] args) {
-       // double[] wspolczynniki = {1,-3,Math.log(4),2,-3,Math.sin(50)}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
-        DoubleFunction<Double> cube = (x) -> (x+1)*(Math.pow((x-1),4));
+        // double[] wspolczynniki = {1,-3,Math.log(4),2,-3,Math.sin(50)}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
+        DoubleFunction<Double> cube = (x) -> (x + 1) * (Math.pow((x - 1), 4));
         double a = -1.5; // the left end of the interval
         double b = -0.75; // the right end of the interval
         double epsilon = 0.01;

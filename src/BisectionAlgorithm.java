@@ -9,7 +9,7 @@ public class BisectionAlgorithm {
 
         double c = a;
 
-        while (Math.abs(f(c))>= epsilon) {
+        while (Math.abs(f(c)) >= epsilon) {
             c = (a + b) / 2.0;
             if (f(c) * f(a) < 0) {
                 b = c;
@@ -23,13 +23,13 @@ public class BisectionAlgorithm {
 
     public static double f(double x) {
         // enter your function
-        return (x+1)*(Math.pow((x-1),4));
+        return (x + 1) * (Math.pow((x - 1), 4));
     }
 
     public static void main(String[] args) {
         double a = -1.5;  //the left end of the interval
         double b = -0.75;  // the rigt end of the interval
-        double epsilon = 0.01; //
+        double epsilon = 0.00001; //
 
 
         double result = bisection(a, b, epsilon);
