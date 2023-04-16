@@ -1,61 +1,67 @@
-import java.util.Scanner;
+import java.util.function.DoubleFunction;
 
 public class MetodaFalsi {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Podaj lewą granicę przedziału: ");
-        double a = scanner.nextDouble();
-        System.out.print("Podaj prawą granicę przedziału: ");
-        double b = scanner.nextDouble();
-        System.out.print("Podaj dokładność obliczeń: ");
-        double epsilon = scanner.nextDouble();
+    static int licznik = 0;
+    private static final double DX = 0.0001;
 
-        double x;
-        int iteracje = 0;
+    private static DoubleFunction<Double> derive(DoubleFunction<Double> f) {
+        return (x) -> (f.apply(x + DX) - f.apply(x)) / DX;
+    }
 
-        do {
-            double fa = funkcja(a);
-            double fb = funkcja(b);
-            double df = pochodnaPierwszegoStopnia(a, b);
-            double d2f = pochodnaDrugiegoStopnia(a, b);
-            x = (a * fb - b * fa) / (fb - fa);
-            double fx = funkcja(x);
-            double blad = Math.abs(fx);
-            iteracje++;
-
-            if (fx * fa < 0) {
-                b = x;
-            } else {
-                a = x;
-            }
-
-            if (d2f == 0) {
-                x = Double.NaN;
-                break;
-            }
-
-        } while (Math.abs(funkcja(x)) > epsilon && iteracje < 1000);
-
-        if (!Double.isNaN(x)) {
-            System.out.println("Pierwiastek równania: " + x);
-            System.out.println("Liczba iteracji: " + iteracje);
-        } else {
-            System.out.println("Nie udało się wyznaczyć pierwiastka równania.");
+    public static void falsi(double a, double b, double epsil, DoubleFunction<Double> rownanie) {
+        if (func(rownanie, a) * func(rownanie, b) >= 0) {
+            throw new IllegalArgumentException("Wartosci na koncach przedzialu sa takie same!");
         }
+        DoubleFunction<Double> f1 = derive(rownanie);
+        DoubleFunction<Double> f2 = derive(f1);
+
+        double c = a;
+        if (func(f1, a) * func(f2, a) >= 0) {
+            c = a;
+        }
+        if (func(f1, b) * func(f2, b) >= 0) {
+            c = b;
+        }
+
+        if (func(f1, b) * func(f2, b) >= 0 && func(f1, a) * func(f2, a) >= 0) {
+            if (func(rownanie, a) * func(f2, a) >= 0) {
+                c = a;
+            }
+            if (func(rownanie, b) * func(f2, b) >= 0) {
+                c = b;
+            }
+        }
+        double x;
+        if (c == b)
+            x = a;
+        else x = b;
+        while (Math.abs(func(rownanie, x)) >= epsil) {
+            x = x - (func(rownanie, x) * (c - x)) / (func(rownanie, c) - func(rownanie, x));
+            licznik++;
+        }
+        System.out.println("x" + licznik + " = " + x);
     }
 
-    public static double funkcja(double x) {
-        // tu wpisz funkcję, której pierwiastek chcesz obliczyć
-        return (x+1)*(Math.pow((x-1),4));
+//    public static double[] pochodna(double[] rownanie) {
+//        int n = rownanie.length;
+//        double[] wspPochodnej = new double[n - 1];
+//        for (int i = 1; i < n; i++) {
+//            wspPochodnej[i - 1] = rownanie[i] * i;
+//        }
+//        return wspPochodnej;
+//    }
+
+    static double func(DoubleFunction<Double> f, double x) {
+        return (f.apply(x));
     }
 
-    public static double pochodnaPierwszegoStopnia(double a, double b) {
-        double h = 0.0001;
-        return (funkcja(b) - funkcja(a)) / (b - a);
-    }
 
-    public static double pochodnaDrugiegoStopnia(double a, double b) {
-        double h = 0.0001;
-        return (funkcja(b + h) - 2 * funkcja(b) + funkcja(b - h)) / (h * h);
+    public static void main(String[] args) {
+        // double[] wspolczynniki = {1,-3,Math.log(4),2,-3,Math.sin(50)}; // wspolczynniki podowane sa w odwrotnej kolejnosci tzn. od wyrazu wolnego do najwyzszej potegi
+        DoubleFunction<Double> cube = (x) -> (x + 1) * (Math.pow((x - 1), 4));
+        double a = -1.5; // the left end of the interval
+        double b = -0.75; // the right end of the interval
+        double epsilon = 0.01;
+        falsi(a, b, epsilon, cube);
     }
 }
