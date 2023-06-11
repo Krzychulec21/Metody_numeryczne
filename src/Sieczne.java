@@ -65,7 +65,7 @@ public class Sieczne {
         DoubleFunction<Double> cube = (x) -> (x + 1) * (Math.pow((x - 1), 4));
         double a = -1.5; // the left end of the interval
         double b = -0.75; // the right end of the interval
-        double epsilon = 0.01;
+        double epsilon = 0.000001;
         sieczne(a, b, epsilon, cube);
     }
 
